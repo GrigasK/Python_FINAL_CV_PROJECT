@@ -1,0 +1,115 @@
+{% extends 'public/templates/public_template.html' %} {% block title %} Grigorijaus CV {% endblock %}{% block main%} {%for user in user%}
+<div style="margin-top: 20px; margin-bottom: -20px">
+  <p class="quote" align="center">"{{quote[0]}}" - {{quote[1]}}</p>
+</div>
+<div class="main-container">
+  <div class="left-container">
+    {%if user.photo%}
+    <div class="photo-container">
+      <img class="photo" src="{{ url_for('static', filename='uploads/' + user.photo) }} " alt="" />
+      <br />
+    </div>
+    {%endif%} {%if user%}
+    <div class="personal-container">
+      <div>
+        <h5><i class="bi bi-person-fill"></i> Personal information</h5>
+      </div>
+      <br />
+      <div><p style="padding-left: 20px; padding-top: 5px">{{user.first_name}} {{user.last_name}}</p></div>
+
+      <div>
+        <p><i class="bi bi-calendar-event"></i> {{user.dob}}</p>
+      </div>
+    </div>
+    {%endif%} {%if skill%}
+    <div id="skills" class="soft-container">
+      <h5><i class="fa-solid fa-file-code"></i> Programming skills</h5>
+    </div>
+    {%endif%} {%if language%}
+    <div class="language-container">
+      <h5><i class="fa-solid fa-language"></i> Languages</h5>
+      <br />
+      {% for x in language%}
+
+      <p>{{ x['language']}}: {{ x['level']}}</p>
+
+      {%endfor%}
+    </div>
+    {%endif%} {%if competence%}
+
+    <div class="comp-container">
+      <h5><i class="fa-solid fa-lightbulb"></i> Competences</h5>
+      <br />
+
+      {% for x in competence %}
+      <div><p>{{x['name']}}</p></div>
+      {%endfor%}
+    </div>
+    {%endif%} {%if user%}
+    <div class="contact-container">
+      <h5><i class="fas fa-address-book"></i> Contacts</h5>
+      <div>
+        <br />
+        <p>
+          <i class="bi bi-linkedin"></i>
+          <a href="{{user.linkedin}}" target="_blank">{{user.first_name}} {{user.last_name}}</a>
+        </p>
+      </div>
+      <div>
+        <p><span class="bi bi-envelope"></span> {{user.email}}</p>
+      </div>
+      <div>
+        <p><i class="bi bi-telephone"></i> {{user.phone}}</p>
+      </div>
+      <div>
+        <p>
+          <i class="bi bi-github"></i>
+          <a href="{{user.github}} target=" target="_blank"> My GitHub</a>
+        </p>
+      </div>
+    </div>
+    {%endif%}
+  </div>
+
+  <div class="right-container">
+    {%if user.info == '' or None %} {%if joke%}
+    <h5>No information, so read a joke (source: Dad jokes API)</h5>
+    <h6>{{joke[0]}} --- {{joke[1]}}</h6>
+    {%endif%} {%else%}
+    <div class="description-container">
+      <h3>A LITTLE BIT ABOUT ME</h3>
+      <hr />
+      <br />
+      <p>{{user.info}}</p>
+    </div>
+    {%endif%} {%if experience%}
+    <div class="experience-container">
+      <h3>WORK EXPERIENCE</h3>
+      <hr />
+      <br />
+      {% for x in experience %}
+      <h5>{{x['position']}}</h5>
+      <h6>{{x['company_name']}}</h6>
+      <p>{{x['start_date']}} - {{x['end_date']}}</p>
+      <p>{{x['description']}}</p>
+      {% endfor %}
+    </div>
+    {%endif%} {%if education%}
+    <div class="education-container">
+      <h3>EDUCATION</h3>
+      <hr />
+      <br />
+      {% for x in education %}
+      <h5>{{x['institution_name']}}</h5>
+
+      <h6>{% if x['field_of_study'] is not none and x['field_of_study'] != '' %} {{x['field_of_study']}} ({{x['degree']}}) {% endif %}</h6>
+
+      <p>{{x['start_date']}} - {{x['end_date']}}</p>
+      <br />
+      {% endfor %}
+    </div>
+    {%endif%}
+  </div>
+</div>
+
+{%endfor%} {%endblock%}

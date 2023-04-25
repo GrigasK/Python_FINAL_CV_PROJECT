@@ -1,0 +1,37 @@
+{% extends 'public/templates/public_template.html' %} {% block title %} {{title}} {% endblock %}{% block main%}
+<div class="content-container">
+  <div margin="auto">
+    <img width="300px" height="auto" src="static/img/progr.png" alt="" />
+  </div>
+  <div class="title">
+    <h3>This is my CV project with Python</h3>
+    <hr />
+  </div>
+  <br /><br />
+  <h5>If you want read more about me, submit your name, company you represent and email</h5>
+  <div class="content">
+    <br /><br />
+    <div class="form-container">
+      <form action="add_visitor" method="POST">
+        <div class="form-group">
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="inputGroup-sizing-default">Name</span>
+            <input name="visitor_name" required="1" type="text" class="form-control" aria-describedby="inputGroup-sizing-default" />
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="inputGroup-sizing-default">Company name</span>
+            <input type="text" required="1" name="visitor_company" class="form-control" aria-label="Sizing example input" />
+          </div>
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="inputGroup-sizing-default">Email</span>
+            <input type="email" required="1" name="visitor_email" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
+          </div>
+          <button class="btn btn-secondary" type="submit">Submit</button>
+        </div>
+        <br />
+        <p>*Your data will not be published, shared or exposed in any other way</p>
+      </form>
+    </div>
+  </div>
+</div>
+{%endblock%}

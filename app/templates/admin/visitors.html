@@ -1,0 +1,24 @@
+{% extends 'admin/templates/admin_template.html' %} {% block title %} {% endblock %} {% block main %}
+
+<div class="container">
+  <table class="table table-hover table-sm table-striped">
+    <tr>
+      <th>#</th>
+      <th>Visitor name</th>
+      <th>Email</th>
+      <th>Company</th>
+      <th>Time stamp</th>
+    </tr>
+    {%for x in visitor%}
+    <tr>
+      <td>{{x.id}}</td>
+      <td>{{x.visitor_name}}</td>
+      <td>{{x.visitor_email}}</td>
+      <td>{{x.visitor_company}}</td>
+      <td>{{x.visit_time}}</td>
+    </tr>
+
+    {%endfor%}
+  </table>
+</div>
+{% endblock %}

@@ -1,0 +1,747 @@
+{% extends 'admin/templates/admin_template.html' %} {% block title %} {% endblock %} {% block main %}
+
+<!-- ADD USER DATA -->
+<!-- ON PURPOSE USER DELETE OPTION EXCLUDED -->
+
+<div class="admin-container">
+  <div class="container">
+    <h6 class="quote">Daily dose of Chuck joke:</h6>
+    <h7>{{Chuck}}</h6>
+    <div class="row">
+      <div class="col-sm">
+        <hr />
+        <p class="p-3">
+          <button type="button" class="badge bg-success btn-sm m-3" data-bs-toggle="modal" data-bs-target="#add-user-modal">Add personal details</button>
+        </p>
+
+        {% for x in user %}
+        <table class="table table-hover table-dark table-striped">
+          <tr>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>Phone number</th>
+            <th>Date of birth</th>
+            <th>Your linkedin link</th>
+            <th>Your github link</th>
+            <th>Upload photo</th>
+            <th>Action</th>
+          </tr>
+
+          <tr>
+            <td>{{x.first_name}}</td>
+            <td>{{x.last_name}}</td>
+            <td>{{x.phone}}</td>
+            <td>{{x.dob}}</td>
+            <td>{{x.linkedin}}</td>
+            <td>{{x.github}}</td>
+            <td>{{x.photo}}</td>
+            <td>
+              <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modal-user-edit">Edit</button>
+            </td>
+          </tr>
+
+          <!-- Modal -->
+          <div class="modal" id="add-user-modal">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header bg-secondary">
+                  <h4 class="modal-title text-light">Add user details</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body bg-dark text-light">
+                  <form action="add_user" method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                      <label> First name </label>
+                      <input type="hidden" name="id" value="{{user.id}}" />
+                      <input type="text" class="form-control" name="first_name" required="1" />
+                    </div>
+                    <div class="form-group">
+                      <label> Last name </label>
+                      <input type="text" class="form-control" name="last_name" required="1" />
+                    </div>
+                    <div class="form-group">
+                      <label> Phone number </label>
+                      <input type="text" class="form-control" name="phone" required="1" />
+                    </div>
+                    <div class="form-group">
+                      <label> Date of birth </label>
+                      <input type="date" class="form-control" name="dob" required="1" />
+                    </div>
+                    <div class="form-group">
+                      <label> Linkedin </label>
+                      <input type="text" class="form-control" name="linkedin" required="1" />
+                    </div>
+                    <div class="form-group">
+                      <label> GitHub </label>
+                      <input type="text" class="form-control" name="github" required="1" />
+                    </div>
+                    <div class="form-group">
+                      <label> Photo </label>
+                      <input type="file" class="form-control" name="file" required="1" />
+                    </div>
+
+                    <div class="form-group mt-3">
+                      <button class="btn btn-secondary" type="submit">Add profile details</button>
+                    </div>
+                  </form>
+                </div>
+
+                <div class="modal-footer bg-secondary">
+                  <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal" id="modal-user-edit">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header bg-secondary">
+                  <h4 class="modal-title text-light">Update user</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body bg-dark text-light">
+                  <form action="{{ url_for('update_user', id=x.id) }}" method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                      <label> First name: </label>
+                      <input type="hidden" name="id" value="{{x.id}}" />
+                      <input type="text" class="form-control" name="first_name" value="{{x.first_name}}" />
+                    </div>
+                    <div class="form-group">
+                      <label> Last name: </label>
+                      <input type="text" class="form-control" name="last_name" value="{{x.last_name}}" />
+                    </div>
+                    <div class="form-group">
+                      <label> Phone number: </label>
+                      <input type="text" class="form-control" name="phone" value="{{x.phone}}" />
+                    </div>
+                    <div class="form-group">
+                      <label> Date of birth: </label>
+                      <input type="date" class="form-control" name="dob" value="{{x.dob}}" />
+                    </div>
+                    <div class="form-group">
+                      <label> Linkedin: </label>
+                      <input type="text" class="form-control" name="linkedin" value="{{x.linkedin}}" />
+                    </div>
+                    <div class="form-group">
+                      <label> GitHub: </label>
+                      <input type="text" class="form-control" name="github" value="{{x.github}}" />
+                    </div>
+                    <div class="form-group">
+                      <label> Photo </label>
+                      <input type="file" class="form-control" name="file" value="{{x.photo}}" />
+                    </div>
+                    <div class="form-group mt-3">
+                      <button class="btn btn-secondary" type="submit">Add</button>
+                    </div>
+                  </form>
+                </div>
+
+                <div class="modal-footer bg-secondary">
+                  <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </table>
+
+        <div style="display: flex">
+          <div><textarea disabled name="info" id="" cols="110%" rows="5">{{x.info}}</textarea></div>
+          <div style="margin-left: 50px">
+            <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modal-info-edit">Edit</button>
+
+            <a href="/delete_info/{{x.id}}" class="btn btn-danger btn-sm" onclick="return confirm('Are you really want delete ?')"> Delete </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal" id="modal-info-edit">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header bg-secondary">
+            <h4 class="modal-title text-light">Write about yourself</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+
+          <div class="modal-body bg-dark text-light">
+            <form action="{{ url_for('edit_info', id=x.id) }}" method="POST" enctype="multipart/form-data">
+              <div class="form-group">
+                <label> Write about yourself: </label>
+                <input type="hidden" name="id" value="{{x.id}}" />
+                <textarea type="text" cols="30" rows="5" class="form-control" name="info" value="{{x.info}}"></textarea>
+              </div>
+              <div class="form-group mt-3">
+                <button class="btn btn-secondary" type="submit">Add</button>
+              </div>
+            </form>
+          </div>
+
+          <div class="modal-footer bg-secondary">
+            <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    {%endfor%}
+
+    <!-- ADDING / EDITING / DELETING SKILLS TO DATABASE 
+---------------------------------------------------------------------------------------------------------->
+
+    <div class="container">
+      <div class="row">
+        <!-- <div class="col-sm"> -->
+        <hr />
+        <p class="p-3">
+          <button type="button" class="badge bg-success btn-sm m-3" data-bs-toggle="modal" data-bs-target="#add-skill-modal">Add your skill</button>
+        </p>
+
+        <table class="table table-hover table-dark table-striped">
+          <tr>
+            <th>Skill</th>
+            <th>Level</th>
+            <th>Action</th>
+          </tr>
+          {% for row in skill %}
+          <tr>
+            <td>{{row.name}}</td>
+            <td>{{row.level}}</td>
+            <td>
+              <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modal-edit{{row.id}}">Edit</button>
+
+              <a href="/skill_delete/{{row.id}}" class="btn btn-danger btn-sm" onclick="return confirm('Ar tikrai triname ?')"> Delete </a>
+            </td>
+          </tr>
+
+          <!-- </div> -->
+
+          {%endfor%}
+          <!-- Add Modal --------------------------------------->
+          <div class="modal" id="add-skill-modal">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header bg-secondary">
+                  <h4 class="modal-title text-light">Add Skill</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body bg-dark text-light">
+                  <form action="add_skill" method="POST">
+                    <div class="form-group">
+                      <label> Skill: </label>
+                      <input type="hidden" name="id" value="{{skill.id}}" />
+                      <input type="text" class="form-control" name="skill_name" required="1" />
+                    </div>
+                    <div class="form-group">
+                      <label> Level </label>
+                      <input type="number" class="form-control" name="level" min="0" max="100" required="1" placeholder="Rate your skill level from 0 to 100" />
+                    </div>
+
+                    <div class="form-group mt-3">
+                      <button class="btn btn-secondary" type="submit">Add skill</button>
+                    </div>
+                  </form>
+                </div>
+
+                <div class="modal-footer bg-secondary">
+                  <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {% for row in skill %}
+          <div class="modal" id="modal-edit{{row.id}}">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header bg-secondary">
+                  <h4 class="modal-title text-light">Update skill</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body bg-dark text-light">
+                  <form action="{{ url_for('update_skill', id=row.id) }}" method="POST">
+                    <div class="form-group">
+                      <label> Skill: </label>
+                      <input type="hidden" name="id" value="{{row.id}}" />
+                      <input type="text" class="form-control" name="skill_name" required="1" value="{{row.name}}" />
+                    </div>
+                    <div class="form-group">
+                      <label> Level </label>
+                      <input type="number" class="form-control" name="level" min="0" max="100" required="1" value="{{row.level}}" />
+                    </div>
+
+                    <div class="form-group mt-3">
+                      <button class="btn btn-secondary" type="submit">Update</button>
+                    </div>
+                  </form>
+                </div>
+
+                <div class="modal-footer bg-secondary">
+                  <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </table>
+      </div>
+    </div>
+    <!-- END OF MODAL
+---------------------------------------------------------------------------------------------------------->
+
+    <!-- ADDING EDUCATION ------------------------------------------------------------------------------->
+
+    <div class="container">
+      <div class="row">
+        <!-- <div class="col-sm"> -->
+        <hr />
+        <p class="p-3">
+          <button type="button" class="badge bg-success btn-sm m-3" data-bs-toggle="modal" data-bs-target="#add-education-modal">Add your Education</button>
+        </p>
+
+        <table class="table table-hover table-dark table-striped">
+          <tr>
+            <th>Institution name</th>
+            <th>Degree</th>
+            <th>Field of study</th>
+            <th>Start date</th>
+            <th>End date</th>
+            <th>Action</th>
+          </tr>
+          {% for row in education %}
+          <tr>
+            <td>{{row.institution_name}}</td>
+            <td>{{row.degree}}</td>
+            <td>{{row.field_of_study}}</td>
+            <td>{{row.start_date}}</td>
+            <td>{{row.end_date}}</td>
+            <td>
+              <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modal-education-edit{{row.id}}">Edit</button>
+
+              <a href="/delete_education/{{row.id}}" class="btn btn-danger btn-sm" onclick="return confirm('Are you really want delete?')"> Delete </a>
+            </td>
+          </tr>
+
+          <!-- </div> -->
+
+          {%endfor%}
+          <!-- Add Modal --------------------------------------->
+          <div class="modal" id="add-education-modal">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header bg-secondary">
+                  <h4 class="modal-title text-light">Add your education</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body bg-dark text-light">
+                  <form action="add_education" method="POST">
+                    <div class="form-group">
+                      <label> Institution name </label>
+                      <input type="hidden" name="id" value="{{education.id}}" />
+                      <input type="text" class="form-control" name="institution_name" required="1" />
+                    </div>
+                    <div class="form-group">
+                      <label> Degree </label>
+                      <input type="text" class="form-control" name="degree" required="1" />
+                    </div>
+                    <div class="form-group">
+                      <label> Field of studies </label>
+                      <input type="text" class="form-control" name="field_of_study" />
+                    </div>
+                    <div class="form-group">
+                      <label> Start year </label>
+                      <input type="text" class="form-control" name="start_date" required="1" />
+                    </div>
+                    <div class="form-group">
+                      <label> End year </label>
+                      <input type="text" class="form-control" name="end_date" required="1" />
+                    </div>
+
+                    <div class="form-group mt-3">
+                      <button class="btn btn-secondary" type="submit">Confirm</button>
+                    </div>
+                  </form>
+                </div>
+
+                <div class="modal-footer bg-secondary">
+                  <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {% for row in education %}
+          <div class="modal" id="modal-education-edit{{row.id}}">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header bg-secondary">
+                  <h4 class="modal-title text-light">Update your education</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body bg-dark text-light">
+                  <form action="{{ url_for('edit_education', id=row.id) }}" method="POST">
+                    <div class="form-group">
+                      <label> Institution name </label>
+                      <input type="hidden" name="id" value="{{row.id}}" />
+                      <input type="text" class="form-control" name="institution_name" value="{{row.institution_name}}" />
+                    </div>
+                    <div class="form-group">
+                      <label> Degree </label>
+                      <input type="text" class="form-control" name="degree" value="{{row.degree}}" />
+                    </div>
+                    <div class="form-group">
+                      <label> Field of studies </label>
+                      <input type="text" class="form-control" name="field_of_study" value="{{row.field_of_study}}" />
+                    </div>
+                    <div class="form-group">
+                      <label> Start year </label>
+                      <input type="text" class="form-control" name="start_date" value="{{row.start_date}}" />
+                    </div>
+                    <div class="form-group">
+                      <label> End year </label>
+                      <input type="text" class="form-control" name="end_date" value="{{row.end_date}}" />
+                    </div>
+
+                    <div class="form-group mt-3">
+                      <button class="btn btn-secondary" type="submit">Update</button>
+                    </div>
+                  </form>
+                </div>
+
+                <div class="modal-footer bg-secondary">
+                  <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </table>
+      </div>
+    </div>
+
+    <!-- -- ADDING EXPERIENCE ------------------------ -->
+
+    <div class="container">
+      <div class="row">
+        <!-- <div class="col-sm"> -->
+        <hr />
+        <p class="p-3">
+          <button type="button" class="badge bg-success btn-sm m-3" data-bs-toggle="modal" data-bs-target="#add-experience-modal">Add your Experience</button>
+        </p>
+
+        <table class="table table-hover table-dark table-striped">
+          <tr>
+            <th>Company name</th>
+            <th>Position</th>
+            <th>Description</th>
+            <th>Start date</th>
+            <th>End date</th>
+            <th>Action</th>
+          </tr>
+          {% for row in experience %}
+          <tr>
+            <td>{{row.company_name}}</td>
+            <td>{{row.position}}</td>
+            <td><textarea cols="100" disabled>{{row.description}}</textarea></td>
+            <td>{{row.start_date}}</td>
+            <td>{{row.end_date}}</td>
+            <td>
+              <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modal-experience-edit{{row.id}}">Edit</button>
+              <a href="/delete_experience/{{row.id}}" class="btn btn-danger btn-sm" onclick="return confirm('Are you really want delete?')"> Delete </a>
+            </td>
+          </tr>
+          <!-- </div> -->
+
+          {%endfor%}
+        </table>
+        <!-- Add Modal --------------------------------------->
+        <div class="modal" id="add-experience-modal">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header bg-secondary">
+                <h4 class="modal-title text-light">Add your experience</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+              </div>
+
+              <div class="modal-body bg-dark text-light">
+                <form action="add_experience" method="POST">
+                  <div class="form-group">
+                    <label> Company name </label>
+                    <input type="hidden" name="id" value="{{experience.id}}" />
+                    <input type="text" class="form-control" name="company_name" required="1" />
+                  </div>
+                  <div class="form-group">
+                    <label> Position </label>
+                    <input type="text" class="form-control" name="position" required="1" />
+                  </div>
+                  <div class="form-group">
+                    <label> Description </label>
+                    <input type="text" class="form-control" name="description" required="1" />
+                  </div>
+                  <div class="form-group">
+                    <label> Start year </label>
+                    <input type="text" class="form-control" name="start_date" required="1" />
+                  </div>
+                  <div class="form-group">
+                    <label> End year </label>
+                    <input type="text" class="form-control" name="end_date" required="1" />
+                  </div>
+
+                  <div class="form-group mt-3">
+                    <button class="btn btn-secondary" type="submit">Confirm</button>
+                  </div>
+                </form>
+              </div>
+
+              <div class="modal-footer bg-secondary">
+                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {% for row in experience %}
+        <div class="modal" id="modal-experience-edit{{row.id}}">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header bg-secondary">
+                <h4 class="modal-title text-light">Update your experience</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+              </div>
+
+              <div class="modal-body bg-dark text-light">
+                <form action="{{ url_for('edit_experience', id=row.id) }}" method="POST">
+                  <div class="form-group">
+                    <label> Company name </label>
+                    <input type="hidden" name="id" value="{{row.id}}" />
+                    <input type="text" class="form-control" name="company_name" value="{{row.company_name}}" />
+                  </div>
+                  <div class="form-group">
+                    <label> Position </label>
+                    <input type="text" class="form-control" name="position" value="{{row.position}}" />
+                  </div>
+                  <div class="form-group">
+                    <label> Description </label>
+                    <input type="text" class="form-control" name="description" value="{{row.description}}" />
+                  </div>
+                  <div class="form-group">
+                    <label> Start year </label>
+                    <input type="text" class="form-control" name="start_date" value="{{row.start_date}}" />
+                  </div>
+                  <div class="form-group">
+                    <label> End year </label>
+                    <input type="text" class="form-control" name="end_date" value="{{row.end_date}}" />
+                  </div>
+
+                  <div class="form-group mt-3">
+                    <button class="btn btn-secondary" type="submit">Update</button>
+                  </div>
+                </form>
+              </div>
+
+              <div class="modal-footer bg-secondary">
+                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {%endfor%}
+      </div>
+    </div>
+
+    <!-- -- ADDING LANGUAGE ------------------------ -->
+
+    <div class="container">
+      <div class="row">
+        <!-- <div class="col-sm"> -->
+        <hr />
+        <p class="p-3">
+          <button type="button" class="badge bg-success btn-sm m-3" data-bs-toggle="modal" data-bs-target="#add-language-modal">Add Language</button>
+        </p>
+
+        <table class="table table-hover table-dark table-striped">
+          <tr>
+            <th>Language</th>
+            <th>level</th>
+            <th>Action</th>
+          </tr>
+          {% for row in language %}
+          <tr>
+            <td>{{row.language}}</td>
+            <td>{{row.level}}</td>
+            <td>
+              <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modal-language-edit{{row.id}}">Edit</button>
+              <a href="/delete_language/{{row.id}}" class="btn btn-danger btn-sm" onclick="return confirm('Are you really want delete?')"> Delete </a>
+            </td>
+          </tr>
+          <!-- </div> -->
+
+          {%endfor%}
+        </table>
+        <!-- Add Modal --------------------------------------->
+        <div class="modal" id="add-language-modal">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header bg-secondary">
+                <h4 class="modal-title text-light">Add language</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+              </div>
+
+              <div class="modal-body bg-dark text-light">
+                <form action="add_language" method="POST">
+                  <div class="form-group">
+                    <label> Language</label>
+                    <input type="hidden" name="id" value="{{language.id}}" />
+                    <input type="text" class="form-control" name="language" required="1" />
+                  </div>
+                  <div class="form-group">
+                    <label> Level </label>
+                    <input type="text" class="form-control" name="level" required="1" />
+                  </div>
+                  <div class="form-group mt-3">
+                    <button class="btn btn-secondary" type="submit">Confirm</button>
+                  </div>
+                </form>
+              </div>
+
+              <div class="modal-footer bg-secondary">
+                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {% for row in language %}
+        <div class="modal" id="modal-language-edit{{row.id}}">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header bg-secondary">
+                <h4 class="modal-title text-light">Update your language</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+              </div>
+
+              <div class="modal-body bg-dark text-light">
+                <form action="{{ url_for('edit_language', id=row.id) }}" method="POST">
+                  <div class="form-group">
+                    <label> Language</label>
+                    <input type="hidden" name="id" value="{{row.id}}" />
+                    <input type="text" class="form-control" name="language" value="{{row.language}}" />
+                  </div>
+                  <div class="form-group">
+                    <label> Level </label>
+                    <input type="text" class="form-control" name="level" value="{{row.level}}" />
+                  </div>
+                  <div class="form-group mt-3">
+                    <button class="btn btn-secondary" type="submit">Update</button>
+                  </div>
+                </form>
+              </div>
+
+              <div class="modal-footer bg-secondary">
+                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- -- ADDING COMPETENCE --------------------------------- -->
+
+    <div class="container">
+      <div class="row">
+        <!-- <div class="col-sm"> -->
+        <hr />
+        <p class="p-3">
+          <button type="button" class="badge bg-success btn-sm m-3" data-bs-toggle="modal" data-bs-target="#add-competence-modal">Add Competence</button>
+        </p>
+
+        <table class="table table-hover table-dark table-striped">
+          <tr>
+            <th>Comptetence</th>
+            <th>Action</th>
+          </tr>
+          {% for row in competence %}
+          <tr>
+            <td>{{row.name}}</td>
+            <td>
+              <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modal-competence-edit{{row.id}}">Edit</button>
+              <a href="/delete_competence/{{row.id}}" class="btn btn-danger btn-sm" onclick="return confirm('Are you really want delete?')"> Delete </a>
+            </td>
+          </tr>
+          <!-- </div> -->
+
+          {%endfor%}
+        </table>
+        <!-- Add Modal --------------------------------------->
+        <div class="modal" id="add-competence-modal">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header bg-secondary">
+                <h4 class="modal-title text-light">Add competences</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+              </div>
+
+              <div class="modal-body bg-dark text-light">
+                <form action="add_competence" method="POST">
+                  <div class="form-group">
+                    <label> Competence</label>
+                    <input type="hidden" name="id" value="{{competence.id}}" />
+                    <input type="text" class="form-control" name="competence" required="1" />
+                  </div>
+                  <div class="form-group mt-3">
+                    <button class="btn btn-secondary" type="submit">Confirm</button>
+                  </div>
+                </form>
+              </div>
+
+              <div class="modal-footer bg-secondary">
+                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {% for row in competence %}
+        <div class="modal" id="modal-competence-edit{{row.id}}">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header bg-secondary">
+                <h4 class="modal-title text-light">Update your competences</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+              </div>
+
+              <div class="modal-body bg-dark text-light">
+                <form action="{{ url_for('edit_competence', id=row.id) }}" method="POST">
+                  <div class="form-group">
+                    <label> Competence</label>
+                    <input type="hidden" name="id" value="{{row.id}}" />
+                    <input type="text" class="form-control" name="competence" value="{{row.name}}" />
+                  </div>
+                  <div class="form-group mt-3">
+                    <button class="btn btn-secondary" type="submit">Update</button>
+                  </div>
+                </form>
+              </div>
+
+              <div class="modal-footer bg-secondary">
+                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  {% endblock %}
+</div>
